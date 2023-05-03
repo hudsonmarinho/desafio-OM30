@@ -1,26 +1,53 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+
+const PagesHome = () => import("@/views/Pages/Home/index.vue");
+const AdminDashboard = () => import("@/views/Admin/Dashboard/index.vue");
+
+const PageNotFound = () => import("@/views/Erros/404/index.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
-    component: HomeView,
+    component: PagesHome,
+    meta: {
+      title: "Welcome to the Home"
+    }
   },
   {
-    path: "/about",
-    name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/admin/",
+    name: "AdminDashboard",
+    component: AdminDashboard,
+    meta: {
+      hasAuth: true,
+      title: "AdminDashboard"
+    }
   },
+  {
+    path: "/:pathMatch(.*)*",
+    component: PageNotFound,
+    meta: {
+      title: "Page Not Found!"
+    }
+  }
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
+  history: createWebHistory("/"),
+  routes
+});
+
+router.beforeEach((to, from, next) => {
+  const defaultTitle = "Desafio OM30";
+  const title = to.meta.title;
+
+  if (title) {
+    document.title = `${title} | ${defaultTitle}`;
+  } else {
+    document.title = defaultTitle;
+  }
+
+  next();
 });
 
 export default router;
