@@ -23,7 +23,7 @@
         <router-link
           class="flex items-center px-6 py-2 duration-200 border-l-4"
           :class="[$route.name === 'UIElements' ? activeClass : inactiveClass]"
-          to="/ui-elements"
+          to="/admin"
         >
           <svg
             class="w-5 h-5"
