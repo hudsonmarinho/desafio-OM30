@@ -1,27 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-const PagesHome = () => import("@/views/Pages/Home/index.vue");
-
-const AdminPatientsIndex = () => import("@/views/Admin/Patients/index.vue");
-const AdminPatientNew = () => import("@/views/Admin/Patients/new.vue");
-const AdminPatientEdit = () => import("@/views/Admin/Patients/edit.vue");
-
-const PageNotFound = () => import("@/views/Erros/404/index.vue");
-
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "PagesHome",
-    component: PagesHome,
+    component: import("@/views/Pages/Home/index.vue"),
     meta: {
       title: "Welcome to the Home"
     }
   },
-
   {
     path: "/admin/",
     name: "AdminPatientsIndex",
-    component: AdminPatientsIndex,
+    component: import("@/views/Admin/Patients/index.vue"),
     meta: {
       hasAuth: true,
       title: "AdminPatientsIndex"
@@ -30,7 +21,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/patient/new",
     name: "AdminPatientNew",
-    component: AdminPatientNew,
+    component: import("@/views/Admin/Patients/new.vue"),
     meta: {
       hasAuth: true,
       title: "AdminPatientNew"
@@ -39,16 +30,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/admin/patient/edit/:id",
     name: "AdminPatientEdit",
-    component: AdminPatientEdit,
+    component: import("@/views/Admin/Patients/edit.vue"),
     meta: {
       hasAuth: true,
       title: "AdminPatientEdit"
     }
   },
-
   {
     path: "/:pathMatch(.*)*",
-    component: PageNotFound,
+    component: import("@/views/Erros/404/index.vue"),
     meta: {
       title: "Page Not Found!"
     }

@@ -3,8 +3,8 @@ export interface Patient {
   full_name: string;
   full_name_mother: string;
   birth_date: string;
-  cpf: string;
-  cns: string;
+  cpf: number;
+  cns: number;
   address: string;
   photo: string;
 }
@@ -13,8 +13,8 @@ export interface NewPatient {
   full_name: string;
   full_name_mother: string;
   birth_date: string;
-  cpf: string;
-  cns: string;
+  cpf: number;
+  cns: number;
   address: string;
   photo: string;
 }

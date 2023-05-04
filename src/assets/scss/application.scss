@@ -1,3 +1,25 @@
 @import "~tailwindcss/base";
 @import "~tailwindcss/components";
 @import "~tailwindcss/utilities";
+
+.list-patients {
+  tbody {
+    tr {
+      &:nth-of-type(odd) {
+        background: rgba(#eee, 0.5);
+
+        &:hover {
+          background: rgba(#eee, 0.8);
+        }
+      }
+
+      &:nth-of-type(even) {
+        background: #fff;
+
+        &:hover {
+          background: rgba(#eee, 0.3);
+        }
+      }
+    }
+  }
+}

@@ -1,16 +1,16 @@
 <template>
   <Layout>
     <div class="flex justify-between">
-      <h1 class="text-2xl">Lista de paciêntes</h1>
+      <h1 class="text-2xl">Lista de pacientes</h1>
       <button
         @click="newPatient()"
         class="w-60 h-10 rounded bg-blue-600 text-neutral-50 uppercase"
       >
-        Novo Paciênte
+        Novo Paciente
       </button>
     </div>
 
-    <div class="flex justify-between mb-4 mt-4 items-center">
+    <div v-if="patient" class="flex justify-between mb-4 mt-4 items-center">
       <input
         type="text"
         v-model="search"
@@ -27,7 +27,7 @@
           <div
             class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
           >
-            <table class="min-w-full">
+            <table class="list-patients min-w-full">
               <thead>
                 <tr>
                   <th
@@ -41,9 +41,14 @@
                     Nome da Mãe
                   </th>
                   <th
+                    class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
+                  >
+                    CPF
+                  </th>
+                  <th
                     class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-right text-gray-500 uppercase border-b border-gray-200 bg-gray-50"
                   >
-                    Editar/Remover
+                    Ações
                   </th>
                 </tr>
               </thead>
@@ -60,10 +65,11 @@
 
                     <div class="flex items-center">
                       <div class="flex-shrink-0 w-10 h-10">
-                        <img
-                          class="w-10 h-10 rounded-full"
+                        <Image
                           :src="patient.photo"
                           :alt="patient.full_name"
+                          :title="patient.full_name"
+                          class="w-10 h-10 rounded-full"
                         />
                       </div>
 
@@ -90,6 +96,19 @@
 
                     <div class="text-sm leading-5 text-gray-900">
                       {{ patient.full_name_mother }}
+                    </div>
+                  </td>
+
+                  <td
+                    class="px-6 py-4 border-b border-gray-200 whitespace-nowrap relative"
+                  >
+                    <a
+                      @click="showPatient(patient.id)"
+                      class="absolute inset-x-0 inset-y-0 cursor-pointer"
+                    ></a>
+
+                    <div class="text-sm leading-5 text-gray-900">
+                      {{ patient.cpf }}
                     </div>
                   </td>
 
@@ -181,27 +200,130 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL Mover para um "Context" -->
+    <div class="container mx-auto">
+      <div class="flex justify-center">
+        <div
+          v-show="isOpenModal"
+          class="absolute inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50"
+        >
+          <div class="max-w-2xl p-6 mx-4 bg-white rounded-md shadow-xl">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-2xl">{{ current_patient.full_name }}</h3>
+
+              <svg
+                @click="closeModal"
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-8 h-8 text-red-900 cursor-pointer"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="black"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="1"
+                  d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+
+            <div class="max-w-sm w-full lg:max-w-full lg:flex">
+              <div
+                class="lg:w-48 w-full lg:h-48 h-56 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
+                :style="{
+                  background: 'center center no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundImage: `url(${
+                    current_patient.photo
+                      ? current_patient.photo
+                      : '/user-default.png'
+                  })`
+                }"
+                title="Woman holding a mug"
+              ></div>
+
+              <div
+                class="lg:p-4 lg:pt-1 pt-4 flex flex-col justify-between leading-normal"
+              >
+                <div class="mb-8">
+                  <div class="text-gray-700 text-base">
+                    <p v-if="current_patient.full_name">
+                      <strong>Nome completo:</strong>
+                      {{ current_patient.full_name }}
+                    </p>
+
+                    <p v-if="current_patient.full_name_mother">
+                      <strong>Nome da mãe:</strong>
+                      {{ current_patient.full_name_mother }}
+                    </p>
+
+                    <p v-if="current_patient.birth_date">
+                      <strong>Data de Nascimento:</strong>
+                      {{ current_patient.birth_date }}
+                    </p>
+
+                    <p v-if="current_patient.cpf">
+                      <strong>CPF:</strong> {{ current_patient.cpf }}
+                    </p>
+
+                    <p v-if="current_patient.cns">
+                      <strong>CNS:</strong> {{ current_patient.cns }}
+                    </p>
+
+                    <p v-if="current_patient.address" class="mt-4">
+                      <strong>Endereço completo:</strong><br />
+                      {{ current_patient.address }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 flex justify-between">
+              <div></div>
+              <button
+                @click="editPatient(current_patient.id)"
+                class="px-6 py-2 ml-2 text-blue-100 bg-blue-600 rounded"
+              >
+                Editar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </Layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { Patient } from "@/types/Patient";
-import Layout from "@/layouts/Dashboard/Layout.vue";
+import { defineComponent, ref } from "vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import axios from "axios";
+
+import { Patient } from "@/types/Patient";
+import { API_URL } from "@/utils/api";
+
+import Layout from "@/layouts/Dashboard/Layout.vue";
+import Image from "@/components/Image/index.vue";
 
 export default defineComponent({
   name: "AdminPatientsIndex",
-  components: { Layout, Menu, MenuButton, MenuItems, MenuItem },
+  components: { Layout, Menu, MenuButton, MenuItems, MenuItem, Image },
   data() {
+    let isOpenModal = ref(false);
+
     return {
       patients: [] as Patient[],
-      search: ""
+      current_patient: [] as Patient[],
+      search: "",
+      isOpenModal
     };
   },
 
   async created() {
-    const response = await fetch("http://localhost:3000/patients");
+    const response = await fetch(API_URL("/patients"));
     const data = await response.json();
     this.patients = data;
   },
@@ -220,16 +342,37 @@ export default defineComponent({
     },
 
     showPatient(id: number) {
-      this.$router.push(`/admin/patient/show/${id}`);
+      axios
+        .get(API_URL(`/patients/${id}`))
+        .then((response) => {
+          this.current_patient = response.data;
+          this.openModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     editPatient(id: number) {
       this.$router.push(`/admin/patient/edit/${id}`);
     },
 
-    removePatient(id: number) {
-      // TODO: Implementar a exclusão de paciente
-      console.log(id);
+    async removePatient(id: number) {
+      if (confirm("Deseja realmente excluir este paciente?")) {
+        await fetch(API_URL(`/patients/${id}`), {
+          method: "DELETE"
+        });
+
+        this.patients = this.patients.filter((patient) => patient.id !== id);
+      }
+    },
+
+    closeModal() {
+      this.isOpenModal = false;
+    },
+
+    openModal() {
+      this.isOpenModal = true;
     }
   }
 });
