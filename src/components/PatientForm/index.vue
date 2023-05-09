@@ -167,7 +167,7 @@
 <script lang="ts">
 import { defineComponent, watch, ref } from "vue";
 import * as Yup from "yup";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 import { mask } from "vue-the-mask";
 
@@ -291,7 +291,7 @@ export default defineComponent({
   },
 
   methods: {
-    handleFileInput(event: Event) {
+    handleFileInput() {
       // TODO - Implementar upload da imagem
     },
 
