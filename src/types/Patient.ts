@@ -6,7 +6,6 @@ export interface Patient {
   cpf: number;
   cns: number;
   address: string;
-  photo: string;
 }
 
 export interface NewPatient {
@@ -16,5 +15,4 @@ export interface NewPatient {
   cpf: number;
   cns: number;
   address: string;
-  photo: string;
 }
