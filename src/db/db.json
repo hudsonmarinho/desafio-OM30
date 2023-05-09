@@ -1,4 +1,16 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@admin.com",
+      "password": "e10adc3949ba59abbe56e057f20f883e"
+    },
+    {
+      "id": 2,
+      "email": "user@om30.com.br",
+      "password": "97db1846570837fce6ff62a408f1c26a"
+    }
+  ],
   "patients": [
     {
       "id": 1,
@@ -58,7 +70,8 @@
       "cns": 109812345678906,
       "address": "Rua da Praia, 567, Centro, Florianópolis - SC",
       "photo": "https://randomuser.me/api/portraits/women/6.jpg"
-    },{
+    },
+    {
       "id": 7,
       "full_name": "João Silva",
       "full_name_mother": "Maria Silva",
@@ -113,10 +126,19 @@
       "full_name": "Juliana Costa",
       "full_name_mother": "Teresa Costa",
       "birth_date": "1992-04-05",
-      "cpf": 65768443010,
+      "cpf": "657.684.430-10",
       "cns": 109812345678906,
       "address": "Rua da Praia, 567, Centro, Florianópolis - SC",
       "photo": "https://randomuser.me/api/portraits/women/12.jpg"
+    },
+    {
+      "id": 13,
+      "full_name": "Hudson Marinho",
+      "full_name_mother": "Hudson Marinho",
+      "birth_date": "1988-10-31",
+      "cpf": "070.459.414-55",
+      "cns": "2344234234234",
+      "address": "Rua Luiz Francisco de Assis, Jardins, São Gonçalo do Amarante/RN"
     }
   ]
 }
